@@ -1,0 +1,26 @@
+.pano-container {
+  height: 100%;
+  width: 100%;
+  cursor: grab !important;
+}
+
+.pano-container:active {
+  cursor: grabbing !important;
+}
+
+/*.pano-container div:nth-last-child{*/
+/*}*/
+
+/*.pano-container div:last-child{*/
+/*overflow: hidden;*/
+/*background-color: purple;*/
+/*z-index: 1;*/
+/*}*/
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #ffb400;
+  cursor: pointer;
+  border-radius: 50%;
+}

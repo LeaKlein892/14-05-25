@@ -1,0 +1,107 @@
+.fixedLink {
+  display: block !important;
+  position: absolute;
+  padding: 5px;
+  margin: -12px;
+  background: none;
+  border: none;
+  outline: none;
+  border-radius: 30px;
+}
+
+.initialPoint {
+  background-color: rgba(72, 192, 32, 0.7);
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  display: inline-block;
+}
+
+.staticAnnotation {
+  background-color: rgba(37, 32, 192, 0.7);
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.lastAnnotation {
+  background-color: rgba(234, 162, 10, 0.9);
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.selectedAnnotation {
+  background-color: red;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.fixedLink:hover {
+  cursor: pointer;
+  padding: 5px !important;
+  margin: -12px !important;
+  background: rgba(164, 89, 255, 0.25);
+  box-shadow: 0px 2px 10px rgba(164, 89, 255, 0.25);
+}
+
+.noPointer {
+  pointer-events: none;
+}
+
+.highlightedSector {
+  padding: 20px;
+  margin: -27px;
+  border-radius: 100%;
+  transform: rotate(0deg);
+  background: linear-gradient(
+      220deg,
+      rgba(206, 95, 86, 0.7) 42.34%,
+      transparent 42.34%
+    )
+    0 0;
+  background-repeat: no-repeat;
+  background-size: 60% 100%;
+}
+
+.highlightedLink {
+  background: rgba(206, 95, 86, 0.7);
+  box-shadow: 0px 2px 10px rgba(206, 95, 86, 0.7);
+}
+
+.completed {
+  background-color: green;
+  width: 25px;
+  height: 25px;
+  border-radius: 12px;
+  display: inline-block;
+  cursor: pointer;
+}
+.notStarted {
+  background-color: red;
+  width: 25px;
+  height: 25px;
+  border-radius: 12px;
+  display: inline-block;
+  cursor: pointer;
+}
+.inProgress {
+  background-color: orange;
+  width: 25px;
+  height: 25px;
+  border-radius: 12px;
+  display: inline-block;
+  cursor: pointer;
+}
+.irrelevant {
+  background-color: rgb(107, 100, 89);
+  width: 25px;
+  height: 25px;
+  border-radius: 12px;
+  display: inline-block;
+  cursor: pointer;
+}

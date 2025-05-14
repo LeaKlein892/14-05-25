@@ -1,0 +1,95 @@
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
+
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    icon: {
+      fill: theme.palette.primary.main,
+    },
+    formControl: {
+      width: 300,
+    },
+    switch: {
+      display: "flex",
+      alignItems: "center",
+    },
+    buttonTour: {
+      color: theme.palette.secondary.main,
+      fontFamily: "Mukta, sans-serif",
+      fontSize: "10px",
+      marginLeft: "0px",
+      minWidth: "10px",
+    },
+    buttonPlan: {
+      color: theme.palette.grey[800],
+      fontFamily: "Mukta, sans-serif",
+      fontSize: "10px",
+      marginLeft: "20px",
+      minWidth: "10px",
+    },
+    menuItem: {
+      color: theme.palette.grey[800],
+      fontSize: "16px",
+      fontFamily: "Mukta, sans-serif",
+      fontStyle: "bold",
+    },
+    selectedMenuItemPlan: {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.grey[800],
+      fontSize: "16px",
+      fontFamily: "Mukta, sans-serif",
+      fontStyle: "bold",
+    },
+    mobileModemenuItem: {
+      fontSize: "12px",
+      fontStyle: "bold",
+      marginTop: "-5px",
+      marginBottom: "-5px",
+      marginRight: "0px",
+      marginLeft: "0px",
+    },
+    mobileModeSelectedmenuItemPlan: {
+      backgroundColor: theme.palette.secondary.main,
+      fontSize: "12px",
+      fontStyle: "bold",
+      marginTop: "-5px",
+      marginBottom: "-5px",
+      marginRight: "0px",
+      marginLeft: "0px",
+    },
+    selectContainerTour: {
+      backgroundColor: theme.palette.grey[800],
+      color: theme.palette.secondary.main,
+      fontFamily: "Mukta, sans-serif",
+      fontSize: "12px",
+      fontWeight: "bolder",
+      border: "solid",
+      borderRadius: "4px",
+      borderWidth: "2px",
+      borderColor: theme.palette.secondary.main,
+      height: "24px",
+      width: "160px",
+      paddingLeft: "0px",
+      paddingRight: "0px",
+      display: "flex",
+      alignItems: "center",
+      gap: "1px",
+      marginLeft: "0px",
+    },
+    selectContainerPlan: {
+      backgroundColor: "transparent",
+      color: theme.palette.grey[800],
+      fontFamily: "Mukta, sans-serif",
+      fontSize: "18px",
+      borderBottom: "solid",
+      borderRadius: "0px",
+      borderWidth: "3px",
+      borderColor: theme.palette.grey[800],
+      height: "30px",
+      width: "150px",
+      minWidth: "150px",
+      paddingLeft: "0px",
+      paddingRight: "0px",
+    },
+  })
+);

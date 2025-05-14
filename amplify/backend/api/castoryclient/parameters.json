@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "castoryclient",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": "false",
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authcastoryclient22b6c577",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

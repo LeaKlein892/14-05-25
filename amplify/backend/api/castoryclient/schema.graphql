@@ -1,0 +1,619 @@
+type Project
+@model
+@auth (
+  rules: [
+    { allow: private },
+    { allow: public, operations: [read] }
+  ]
+)
+{
+  id: ID!
+  name: String!
+  description: String
+  buildings: [Building]
+  imageURL: String!
+  owner: String
+  architect: String
+  contractor: String
+  projectManagement: String
+  activeProject: Boolean!
+  defaultPlan: String
+}
+
+type Building {
+  name: String!
+  floors: [Floor]
+}
+
+type Floor {
+  name: String!
+  areas: [Area]
+}
+
+type Area {
+  name: String!
+  infos: [Info]
+  type: AreaTypeEnum
+  hasMultiplePlans: Boolean
+}
+
+type Info {
+  date: String!
+  plan: String!
+  tour: String!
+  sceneId: Int
+  scale: Float
+}
+
+enum IssueTypeEnum {
+  STRUCTURAL
+  ELECTRICAL
+  PLASTERING
+  PLUMBING
+  SAFETY
+  TILING
+  CARPENTRY
+  PAINTING
+  HVAC
+  FIRE
+  HOUSEKEEPING
+}
+
+type Comment
+@model
+@key(name: "dataUrlIndex", fields: ["dataUrl"], queryField: "commentsByDataUrl")
+@key(name: "projectIdIndex", fields: ["projectId"], queryField: "commentsByProjectId")
+@auth (
+  rules: [
+    { allow: public },
+  ]
+)
+{
+  id: ID!
+  dataUrl: String!
+  scene: Scene!
+  title: String!
+  role: String!
+  mail: String!
+  projectId: String
+  description: String
+  writtenBy: String
+  replies: [CommentReply]
+  resolved: Boolean
+  record: ScanRecord
+  issueTypes: [IssueTypeEnum]
+  customIssueTypes: [String]
+  assignees: [String]
+  progress: Float
+  dueDate: String
+}
+
+type ActivityPlannedDates
+@model
+@key(name: "projectIdIndex", fields: ["projectId"], queryField: "plannedDatesByProjectId")
+{
+  id: ID!
+  projectId: String!
+  startDates: AWSJSON!
+  endDates: AWSJSON!
+}
+
+type DelayedActivity {
+  location: String!
+  probability: Float!
+  reason: String
+}
+
+type ProgressDelayedActivities
+@model
+{
+  id: ID!
+  delayedActivities: [DelayedActivity]
+}
+
+type Progress
+@model
+@key(name: "projectIdIndex", fields: ["projectId"], queryField: "progressByProjectId")
+{
+  id: ID!
+  projectId: String!
+  date: String!
+  progressAreas: [ProgressArea]
+  chunkId: Float
+  labels: [String]
+  dod: Float
+  draft: Boolean
+  categories: [ProgressCategory]
+}
+
+type ProgressArea {
+  building: String!
+  floor: String!
+  anchor: String!
+  weight: Float
+  label: String
+  invisible: Boolean
+  activities: [Activity]
+}
+
+type Activity {
+  activityName: String!
+  status: ActivityStatus!
+  previousStatus: ActivityStatus
+  updater: String
+  updateReason: String
+  dateManuallyUpdated: String
+}
+
+type ProgressCategory {
+  name: String!
+  includes: [CategoryChildren]
+}
+
+type CategoryChildren {
+  name: String!
+  weight: Float
+}
+
+enum ActivityStatus {
+  DONE
+  IN_PROGRESS
+  NOT_STARTED
+  IRRELEVANT
+}
+
+type MsProjectSnapshot
+{
+  id: ID!
+  tasks: [TaskData]
+  projectId: String
+  lastUpdated: String
+}
+
+type TaskData {
+  duration: String
+  finish: String
+  guid: String
+  name: String
+  predecessor: String
+  start: String
+  successor: String
+  totalSlack: String
+  wbs: String
+}
+
+type UserLink
+@model
+@key(name: "dataUrlIndex", fields: ["dataUrl"], queryField: "userLinksByDataUrl")
+@auth (
+  rules: [
+    { allow: public },
+  ]
+)
+{
+  id: ID!
+  dataUrl: String!
+  scene: Scene!
+  targetYaw: Float
+  targetPitch: Float
+  linkFrom: String
+  linkTo: String!
+  rotation: Int!
+}
+
+type UserSceneName
+@model
+@key(name: "dataUrlIndex", fields: ["dataUrl"], queryField: "userScenesByDataUrl")
+@auth (
+  rules: [
+    { allow: public }
+  ]
+)
+{
+  id: ID!
+  dataUrl: String!
+  sceneId: String!
+  sceneName: String!
+}
+
+type PlanLinks
+@model
+@auth (
+  rules: [
+    { allow: private },
+    { allow: public, operations: [read] }
+  ]
+)
+{
+  id: ID!
+  tourDataUrl: String!
+  planUrls: [PlanUrl]
+  linkLocations: [LinkDetails]!
+}
+
+type UserProfile
+@model
+@key(name: "usernameIndex", fields: ["username"], queryField: "userProfileByName")
+{
+  id: ID!
+  username: String!
+  email: String!
+  phoneNumber: String
+  role: String
+  unsubscribedToEmails: Boolean
+  isProgressAdmin: Boolean
+  progressEditor: Boolean
+  participatesInProjects: [String]
+}
+
+type ChatMessage
+@model
+@key(name: "usernameIndex", fields: ["username", "createdAt"], queryField: "chatMessagesByUsername")
+@auth (
+  rules: [
+    { allow: public },
+  ]
+)
+{
+  id: ID!
+  username: String!
+  text: String!
+  project: String!
+  isAnswer: Boolean
+  analysis: [ImagesAnalysisResponse]
+  createdAt: AWSDateTime
+}
+
+type ProjectCopilotResponse {
+  answer: String!
+  imagesAnalysis: [ImagesAnalysisResponse]
+}
+
+type ProgressValue {
+  date: String
+  progress: Float
+}
+
+type PlannedDatesRecord {
+  building: String!
+  floor: String!
+  startDate: String!
+  endDate: String!
+}
+
+type ActivityPlannedDatesResponse {
+  activity: String!
+  plannedDates: [PlannedDatesRecord]!
+}
+
+type ImagesAnalysisResponse {
+  date: String
+  imageKeys: ImagesIn360View
+  anchor: String
+  top: Float
+  left: Float
+  matchingCriteria: Boolean
+  certainty: Float
+  explanation: String
+}
+
+type ImagesIn360View {
+  floor: String
+  wall1: String
+  wall2: String
+  wall3: String
+  wall4: String
+  ceiling: String
+}
+
+type ExtendedUserProfile {
+  userProfile: UserProfile
+  projects: [Project]
+}
+
+type PlanInitialPoint
+@model
+@auth (
+  rules: [
+    { allow: public },
+  ]
+)
+{
+  id: ID!
+  matched: Boolean!
+  scanRecords: [ScanRecord]
+}
+
+type PhotoTourPoints
+@model
+{
+  id: ID!
+  projectId: String!
+  building: String!
+  area: String!
+  filesPath: String
+  date: String
+  username: String!
+  registered: Boolean
+  photoRecords: [PhotoRecord]
+}
+
+type PlanAnchors
+@model
+{
+  id: ID!
+  photoRecords: [PhotoRecord]
+}
+
+type TourToken
+@model
+@auth (
+  rules: [
+    { allow: private },
+    { allow: public, operations: [read] }
+  ]
+)
+{
+  id: ID!
+  token: String!
+}
+
+type Scene {
+  sceneId: String
+  yaw: Float
+  pitch: Float
+  fov: Float
+}
+
+type CommentReply {
+  reply: String!
+  writtenBy: String
+  date: String!
+  role: String
+  mail: String
+  fileName: String
+}
+
+type LinkDetails {
+  sceneId: String!
+  sceneName: String
+  planYaw: Float
+  leftLocation: Float!
+  topLocation: Float!
+  linkUrl: String!
+  isPhotoLink: Boolean
+  linkItemType: ItemTypeEnum
+}
+
+enum ItemTypeEnum {
+  IMAGE_360
+  IMAGE_PLAIN_ZOOMABLE
+  VIDEO_FRAME_360
+  VIDEO
+}
+
+type PlanUrl {
+  url: String!
+  name: String!
+  id: Int!
+}
+
+enum AreaTypeEnum {
+  APARTMENT
+  FLOOR
+}
+
+type ScanRecord {
+  recordDate: String!
+  building: String!
+  floor: String!
+  planUrl: String!
+  leftLocation: Float!
+  topLocation: Float!
+  username: String!
+}
+
+type PhotoRecord {
+  leftLocation: Float!
+  topLocation: Float!
+  fileName: String!
+  needsManualRegistration: Boolean
+  label: String
+}
+
+type ProjectInvitation
+@model
+@key(name: "tokenIndex", fields: ["token"], queryField: "projectInvitationByToken")
+{
+  id: ID!
+  fromUserName: String!
+  inviteAddress: String!
+  token: String!
+  projectId: String!
+}
+
+type PlanBimMatching
+@model
+@key(name: "planUrlIndex", fields: ["planUrl"], queryField: "planBimMatchingByPlanUrl")
+{
+  id: ID!
+  planUrl: String!
+  bimUrl: String!
+  record: ScanRecord!
+  viewport: BimViewport!
+}
+
+type PlanBimTransformation
+@model
+{
+  id: ID!
+  bimUrl: String!
+  transformationMatrix: [[Float]]
+  bimUp2CastoryUpRotationMatrix: [[Float]]
+  inverseMatchMatrix: [[Float]]
+  floorUpVec: [Float]
+  northVec: [Float]
+  eastVec: [Float]
+  viewport: BimViewport
+  preventFirstPerson: Boolean
+}
+
+type BimViewport {
+  name: String!
+  eye: [Float]!
+  target: [Float]!
+  up: [Float]!
+  worldUpVector: [Float]!
+  pivotPoint: [Float]!
+  distanceToOrbit: Float!
+  aspectRatio: Float!
+  projection: String!
+  isOrthographic: Boolean!
+  fieldOfView: Float!
+}
+
+type NearestScene
+{
+  sceneId: String! @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+  yaw: Float @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+}
+
+type PlanAnchorsResponse
+{
+  date: String! @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+  linkId: Float! @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+}
+
+type Mutation {
+  sendEmail(to: [String]! text: String! link: String! subject: String! templateType: String!): String
+  @function(name: "appsync-resolvers-${env}-sendMail")
+  @auth (
+    rules: [
+      { allow: public }
+    ]
+  )
+
+  sendExponetTask(taskId: String! project: String! send: Boolean deleted: Boolean): String
+  @function(name: "appsync-resolvers-${env}-sendExponetTask")
+  @auth (
+    rules: [
+      { allow: public }
+    ]
+  )
+
+  syncUserLinks(linkId: String!): String
+  @function(name: "manage-bidirectional-links")
+  @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+
+  syncNonLocatedComment(id: String!): String
+  @function(name: "link-non-located-comment")
+  @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+
+  calculatePlanBimTransformation(planUrl: String!, registerByNewOnly: Boolean!): String
+  @function(name: "calculate-plan-bim-transformation")
+
+  publishPhotoLink(photoTourId: String!): String
+  @function(name: "make-tour-from-images")
+
+  publishZoomableImage(project: String!, building: String!, area: String!, filePath: String!, leftLocation: Float!, topLocation: Float!): String
+  @function(name: "add-image-to-plan")
+
+  publishVideoOnPlan(project: String!, building: String!, area: String!, filePath: String!, leftLocation: Float!, topLocation: Float!, isVideo: Boolean): String
+  @function(name: "add-image-to-plan")
+
+  updatePlanYaw(id: String!, sceneId: String!, planYaw: Float!): String
+  @function(name: "appsync-resolvers-${env}-updatePlanYaw")
+
+  updatePlannedDate(activity: String!, project: String!, building: String!, floor: String!, startDate: String!, endDate: String): String
+  @function(name: "appsync-resolvers-${env}-updatePlannedDates")
+
+  inviteUser(from: String!, email: String!, projectId: String!, projectName: String!): String
+  @function(name: "appsync-resolvers-${env}-inviteUser")
+
+  askQuestionOnProject(username: String!, project: String!, prompt: String!): ProjectCopilotResponse
+  @function(name: "appsync-resolvers-${env}-askQuestionOnProject")
+}
+
+type Query {
+  fetchPlanLinks(planUrl: String, date: String, planId: Int): PlanLinks
+  @function(name: "get-plan-links")
+  @auth (
+    rules: [
+      { allow: public }
+    ]
+  )
+
+  nearestScene(originalTourPlanLinksId: String, originalSceneId: String, otherTourPlanLinksId: String, originalYaw: Float): NearestScene
+  @function(name: "appsync-resolvers-${env}-nearestScene")
+  @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+
+  planLinkByAnchor(planUrl: String, anchorId: Float, maxDate: String): PlanAnchorsResponse
+  @function(name: "appsync-resolvers-${env}-planLinkByAnchor")
+  @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+
+  getExtendedProfile(username: String!): ExtendedUserProfile
+  @function(name: "appsync-resolvers-${env}-getExtendedUser:Batch")
+
+  dataUsage(project: String!): String
+  @function(name: "get-data-usage")
+
+  getActivityProgress(project: String!, building: String!, floor: String!, activity: String!, label: String): [ProgressValue]
+  @function(name: "appsync-resolvers-${env}-getActivityProgress")
+
+  fetchActivityPlannedDates(activity: String! project: String! building: String floor: String): ActivityPlannedDatesResponse
+  @function(name: "appsync-resolvers-${env}-getActivityPlannedDates")
+
+  getProgressActivityNames(project: String!): [String]
+  @function(name: "appsync-resolvers-${env}-getProgressActivityNames")
+
+  getProgressMsTasks(project: String!): MsProjectSnapshot
+  @function(name: "appsync-resolvers-${env}-getProgressMsTasks")
+
+  validateFileInLocation(fileName: String!, bucketLocation: String!): Boolean
+  @function(name: "appsync-resolvers-${env}-validateFileInLocation")
+
+  lastPlanTour(project: String!, building: String!, area: String!, type: String!): Info
+  @function(name: "get-last-plan-tour")
+  @auth (
+    rules: [
+      { allow: public },
+    ]
+  )
+}
+
+type Subscription {
+  onChatMessageByUsername(username: String!): ChatMessage
+  @aws_subscribe(mutations: ["createChatMessage"])
+}

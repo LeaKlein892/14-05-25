@@ -1,0 +1,66 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.amplify-tabs-item[data-state="active"] {
+  border-block-color: #0054ff !important;
+  color: #0054ff !important;
+}
+.amplify-button[data-variation="primary"] {
+  background-color: #0054ff !important;
+}
+.amplify-button[data-size="small"] {
+  color: #0054ff !important;
+}
+.amplify-button.amplify-field-group__control.amplify-field__show-password {
+  background-color: #ffff;
+  border-color: var(--amplify-components-fieldcontrol-border-color);
+}
+.amplify-tabs-item[data-state="inactive"]:hover {
+  color: #0078ff !important;
+}
+
+.amplify-button[data-size="small"]:hover {
+  background-color: rgb(247, 247, 255) !important;
+}
+.amplify-button.amplify-field-group__control.amplify-field__show-password:hover {
+  background-color: rgb(247, 247, 255);
+  border-color: var(--amplify-components-fieldcontrol-border-color);
+}
+
+.adsk-viewing-viewer #toolbar-explodeTool {
+  display: none !important;
+}
+.adsk-viewing-viewer #toolbar-cameraSubmenuTool {
+  display: none !important;
+}
+.adsk-viewing-viewer #toolbar-fullscreenTool {
+  display: none !important;
+}
+.adsk-viewing-viewer #toolbar-propertiesTool {
+  display: none !important;
+}
+.adsk-viewing-viewer #toolbar-zoomTool {
+  display: none !important;
+}
+
+.minimap3D {
+  margin-top: 58px;
+  margin-right: 33px;
+}
+
+.adsk-viewing-viewer .dark-theme .mobile-joystick-back-circle {
+  background: rgba(0, 0, 0, 0.15) !important;
+}
+
+.adsk-viewing-viewer .mobile-joystick-back-circle {
+  backdrop-filter: none !important;
+}

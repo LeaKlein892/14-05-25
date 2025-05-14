@@ -1,0 +1,60 @@
+{
+  "api": {
+    "castoryclient": {
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "description": ""
+              },
+              "authenticationType": "API_KEY"
+            }
+          ],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authcastoryclient22b6c577"
+            }
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "castoryclient22b6c577": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "function": {},
+  "parameters": {
+    "AMPLIFY_function_sesLayer_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sesLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_sesLayer_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sesLayer"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "castorys3images": {
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
+  }
+}
